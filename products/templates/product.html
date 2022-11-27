@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div class="main">
+    <div class="shoe-description">
+        <h2 class="shoe-name">Name: {{ shoe.name }}</h2>
+        <h2 class="task-id">ID: {{ shoe.brand }}</h2>
+        <table class="styled-table">
+            <thead>
+            <tr>
+                <th>Size</th>
+                <th>Price</th>
+                <th>Stock</th>
+            </tr>
+            </thead>
+
+            <tbody>
+            {% for availables in availability %}
+            <tr>
+                <td>{{availables.size}}</td>
+                <td>{{availables.price}}</td>
+                <td>{{availables.available_stock}}</td>
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <a href="{% url 'get_shoes' %}" class="turn-back">Go back
+    </a>
+</div>
+</div>
+</body>
+</html>

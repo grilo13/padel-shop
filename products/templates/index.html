@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+  <div class="app-table">
+        <table class="styled-table">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Model</th>
+                <th>Brand</th>
+            </tr>
+            </thead>
+
+            <tbody>
+            {% for product in products %}
+            <tr>
+                <td>{{product.id}}</td>
+                <td>{{product.name}}</td>
+                <td>{{product.model}}</td>
+                <td>{{product.bran}}</td>
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+</div>
+<a href="{% url 'get_rackets' %}" class="turn-back">Rackets
+    </a>
+<a href="{% url 'get_shoes' %}" class="turn-back">Shoes
+    </a>
+</body>
+</html>

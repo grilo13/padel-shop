@@ -1,5 +1,23 @@
 from django.db import models
 
+CATEGORY_CHOICES = (
+    ('RK', 'Racket'),
+    ('SH', 'Shoes')
+)
+
+COLOR_CHOICES = (
+    ('red', 'Red'),
+    ('green', 'Green'),
+    ('yellow', 'Yellow'),
+    ('blue', 'Blue')
+)
+
+BRAND_CHOICES = (
+    ('bullpadel', 'Bullpadel'),
+    ('wilson', 'Wilson'),
+    ('vibora', 'Vibora')
+)
+
 
 # Create your models here.
 class Racket(models.Model):
@@ -61,3 +79,21 @@ class ShoeAvailability(models.Model):
     def __str__(self):
         return "Shoe {} size {} has a stock of {} and costs {}".format(self.shoe.name, self.size, self.available_stock,
                                                                        self.price)
+
+
+class Item(models.Model):
+    title = models.CharField(max_length=100)
+    category = models.CharField(max_length=30, choices=CATEGORY_CHOICES)
+    color = models.CharField(max_length=15, choices=COLOR_CHOICES)
+    brand = models.CharField(max_length=15, choices=BRAND_CHOICES)
+    size = models.FloatField(null=True)
+    weight = models.FloatField(null=True)
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(fields=["category", "size"],
+                                    name="One shoe object can only have one size for the specific stock")
+        ]
+
+    def __str__(self):
+        return '{} from brand {} and category {} has color {}'.format(self.title, self.brand, self.category, self.color)
