@@ -7,12 +7,13 @@
 <body>
 <div class="main">
     <div class="shoe-description">
-        <h2 class="shoe-name">Name: {{ shoe.name }}</h2>
-        <h2 class="task-id">ID: {{ shoe.brand }}</h2>
+        <h2 class="shoe-name">Name: {{ shoe.title }}</h2>
+        <h2 class="task-id">Brand: {{ shoe.brand }}</h2>
         <table class="styled-table">
             <thead>
             <tr>
-                <th>Size</th>
+                <th>Type</th>
+                <th>Measure</th>
                 <th>Price</th>
                 <th>Stock</th>
             </tr>
@@ -21,9 +22,10 @@
             <tbody>
             {% for availables in availability %}
             <tr>
-                <td>{{availables.size}}</td>
+                <td>{{availables.type}}</td>
+                <td>{{availables.measure}}</td>
                 <td>{{availables.price}}</td>
-                <td>{{availables.available_stock}}</td>
+                <td>{{availables.stock}}</td>
             </tr>
             {% endfor %}
             </tbody>

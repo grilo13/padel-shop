@@ -12,8 +12,8 @@
             <thead>
             <tr>
                 <th>ID</th>
-                <th>Name</th>
-                <th>Model</th>
+                <th>Title</th>
+                <th>Color</th>
                 <th>Brand</th>
             </tr>
             </thead>
@@ -21,10 +21,10 @@
             <tbody>
             {% for shoe in shoes %}
             <tr>
-                <td><a href="{% url 'get_racket_by_id' shoe.id %}"
-                           class="btn btn-danger btn-sm">{{ shoe.id }}</a></td>
-                <td>{{shoe.name}}</td>
-                <td>{{shoe.model}}</td>
+                <td><a href="{% url 'get_shoe_by_id' shoe.id %}"
+                       class="btn btn-danger btn-sm">{{ shoe.id }}</a></td>
+                <td>{{shoe.title}}</td>
+                <td>{{shoe.color}}</td>
                 <td>{{shoe.brand}}</td>
             </tr>
             {% endfor %}

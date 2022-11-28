@@ -10,7 +10,7 @@ from rest_framework.status import HTTP_200_OK, HTTP_400_BAD_REQUEST
 from .serializers import ShoeSerializer, ShoeAvailabilitySerializer, ItemSerializer, ItemMeasuresSerializer
 
 # Models
-from .models import Shoes, ShoeAvailability, Racket, RacketAvailability, Item, ItemMeasures
+from .models import Shoes, ShoeAvailability, Racket, RacketAvailability, Item, ItemMeasures, Category
 
 # Numpy
 import numpy as np
@@ -40,23 +40,20 @@ class GetItemsMeasures(APIView):
 
 class Index(APIView):
     def get(self, request):
-        rackets = Racket.objects.order_by("?")
-        shoes = Shoes.objects.order_by("?")
+        rackets = Item.objects.order_by("?")
 
-        mixed_products = np.random.choice(np.concatenate([rackets, shoes]), rackets.count() + shoes.count(),
-                                          replace=False)
-
-        return render(request, 'index.html', context={'products': mixed_products})
+        return render(request, 'index.html', context={'products': rackets})
 
 
 class GetShoes(APIView):
     permission_classes = (AllowAny,)
 
     def get(self, request):
-        shoes = Shoes.objects.all()
+        shoes_category = Category.objects.get(category='Shoes')
+        shoes = Item.objects.filter(category=shoes_category)
 
         context = {'shoes': shoes, 'count': shoes.count()}
-        return render(request, 'products.html', context)
+        return render(request, 'shoes.html', context)
 
 
 class GetSpecificShoeInformation(APIView):
@@ -64,14 +61,14 @@ class GetSpecificShoeInformation(APIView):
 
     def get(self, request, shoe_identifier):
         try:
-            shoe = Shoes.objects.get(id=shoe_identifier)
-        except Shoes.DoesNotExist:
+            shoe = Item.objects.get(id=shoe_identifier)
+        except Item.DoesNotExist:
             context = {'error': 'Shoe does not exist...'}
-            return render(request, 'product.html', context)
+            return render(request, 'shoe.html', context)
 
-        shoe_availability = ShoeAvailability.objects.filter(shoe_id=shoe_identifier)
+        shoe_availability = ItemMeasures.objects.filter(item=shoe_identifier)
 
-        return render(request, 'product.html', context={'shoe': shoe, 'availability': shoe_availability})
+        return render(request, 'shoe.html', context={'shoe': shoe, 'availability': shoe_availability})
 
 
 class GetAvailabilityShoe(APIView):
@@ -96,7 +93,8 @@ class GetRackets(APIView):
     permission_classes = (AllowAny,)
 
     def get(self, request):
-        rackets = Racket.objects.all()
+        racket_category = Category.objects.get(category='Racket')
+        rackets = Item.objects.filter(category=racket_category)
 
         context = {'rackets': rackets, 'count': rackets.count()}
         return render(request, 'rackets.html', context=context)
@@ -107,10 +105,10 @@ class GetSpecificRacketInformation(APIView):
 
     def get(self, request, racket_identifier):
         try:
-            racket = Racket.objects.get(id=racket_identifier)
-        except Racket.DoesNotExist:
+            racket = Item.objects.get(id=racket_identifier)
+        except Item.DoesNotExist:
             return render(request, 'racket.html', context={'error': 'Racket not found...'})
 
-        racket_availability = RacketAvailability.objects.filter(racket=racket_identifier)
+        racket_availability = ItemMeasures.objects.filter(item=racket_identifier)
 
         return render(request, 'racket.html', context={'racket': racket, 'availability': racket_availability})

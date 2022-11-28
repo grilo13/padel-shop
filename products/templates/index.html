@@ -10,8 +10,8 @@
             <thead>
             <tr>
                 <th>ID</th>
-                <th>Name</th>
-                <th>Model</th>
+                <th>Title</th>
+                <th>Category</th>
                 <th>Brand</th>
             </tr>
             </thead>
@@ -20,9 +20,9 @@
             {% for product in products %}
             <tr>
                 <td>{{product.id}}</td>
-                <td>{{product.name}}</td>
-                <td>{{product.model}}</td>
-                <td>{{product.bran}}</td>
+                <td>{{product.title}}</td>
+                <td>{{product.category}}</td>
+                <td>{{product.brand}}</td>
             </tr>
             {% endfor %}
             </tbody>

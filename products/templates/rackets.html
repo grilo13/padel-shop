@@ -12,8 +12,8 @@
             <thead>
             <tr>
                 <th>ID</th>
-                <th>Name</th>
-                <th>Model</th>
+                <th>Title</th>
+                <th>Color</th>
                 <th>Brand</th>
             </tr>
             </thead>
@@ -23,8 +23,8 @@
             <tr>
                 <td><a href="{% url 'get_racket_by_id' racket.id %}"
                            class="btn btn-danger btn-sm">{{ racket.id }}</a></td>
-                <td>{{racket.name}}</td>
-                <td>{{racket.model}}</td>
+                <td>{{racket.title}}</td>
+                <td>{{racket.color}}</td>
                 <td>{{racket.brand}}</td>
             </tr>
             {% endfor %}

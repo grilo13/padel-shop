@@ -7,12 +7,13 @@
 <body>
 <div class="main">
     <div class="racket-description">
-        <h2 class="racket-name">Name: {{ racket.name }}</h2>
+        <h2 class="racket-name">Name: {{ racket.title }}</h2>
         <h2 class="racket-branc">Brand: {{ racket.brand }}</h2>
         <table class="styled-table">
             <thead>
             <tr>
-                <th>Weight</th>
+                <th>Type</th>
+                <th>Measure</th>
                 <th>Price</th>
                 <th>Stock</th>
             </tr>
@@ -21,9 +22,10 @@
             <tbody>
             {% for availables in availability %}
             <tr>
-                <td>{{availables.weight}}</td>
+                <td>{{availables.type}}</td>
+                <td>{{availables.measure}}</td>
                 <td>{{availables.price}}</td>
-                <td>{{availables.available_stock}}</td>
+                <td>{{availables.stock}}</td>
             </tr>
             {% endfor %}
             </tbody>

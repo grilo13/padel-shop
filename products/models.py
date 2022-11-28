@@ -91,15 +91,32 @@ class ShoeAvailability(models.Model):
                                                                        self.price)
 
 
-"""class Category(models.Model):
-    category = models.CharField(max_length=30, choices=CATEGORY_CHOICES)"""
+class Category(models.Model):
+    category = models.CharField(max_length=50)
+
+    def __str__(self):
+        return 'Category {}'.format(self.category)
+
+
+class Color(models.Model):
+    color = models.CharField(max_length=50)
+
+    def __str__(self):
+        return 'Color {}'.format(self.color)
+
+
+class Brand(models.Model):
+    brand = models.CharField(max_length=50)
+
+    def __str__(self):
+        return 'Brand {}'.format(self.brand)
 
 
 class Item(models.Model):
     title = models.CharField(max_length=100)
-    category = models.CharField(max_length=30, choices=CATEGORY_CHOICES)
-    color = models.CharField(max_length=15, choices=COLOR_CHOICES)
-    brand = models.CharField(max_length=15, choices=BRAND_CHOICES)
+    category = models.ForeignKey(Category, on_delete=models.CASCADE)
+    color = models.ForeignKey(Color, on_delete=models.CASCADE)
+    brand = models.ForeignKey(Brand, on_delete=models.CASCADE)
 
     short_desc = models.CharField(max_length=120, blank=True)
     long_desc = models.TextField(blank=True)
