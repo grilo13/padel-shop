@@ -7,16 +7,37 @@ from rest_framework.response import Response
 from rest_framework.status import HTTP_200_OK, HTTP_400_BAD_REQUEST
 
 # Serializers
-from .serializers import ShoeSerializer, ShoeAvailabilitySerializer
+from .serializers import ShoeSerializer, ShoeAvailabilitySerializer, ItemSerializer, ItemMeasuresSerializer
 
 # Models
-from .models import Shoes, ShoeAvailability, Racket, RacketAvailability
+from .models import Shoes, ShoeAvailability, Racket, RacketAvailability, Item, ItemMeasures
 
 # Numpy
 import numpy as np
 
 
 # Create your views here.
+
+class GetItems(APIView):
+    permission_classes = (AllowAny,)
+
+    def get(self, request):
+        items = Item.objects.all()
+        serializer = ItemSerializer(items, many=True)
+
+        return Response(serializer.data, status=HTTP_200_OK)
+
+
+class GetItemsMeasures(APIView):
+    permission_classes = (AllowAny,)
+
+    def get(self, request, item_identifier):
+        items = ItemMeasures.objects.filter(item=item_identifier)
+        serializer = ItemMeasuresSerializer(items, many=True)
+
+        return Response(serializer.data, status=HTTP_200_OK)
+
+
 class Index(APIView):
     def get(self, request):
         rackets = Racket.objects.order_by("?")

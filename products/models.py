@@ -15,7 +15,17 @@ COLOR_CHOICES = (
 BRAND_CHOICES = (
     ('bullpadel', 'Bullpadel'),
     ('wilson', 'Wilson'),
-    ('vibora', 'Vibora')
+    ('vibora', 'Vibora'),
+    ('asics', 'Asics')
+)
+
+MEASURE_CHOICES = (
+    (38,), (38.5,),
+    (39,), (39.5,),
+    (40,), (40.5,),
+    (41,), (41.5,),
+    (42,), (42.5,),
+    (39,), (39.5,),
 )
 
 
@@ -81,19 +91,36 @@ class ShoeAvailability(models.Model):
                                                                        self.price)
 
 
+"""class Category(models.Model):
+    category = models.CharField(max_length=30, choices=CATEGORY_CHOICES)"""
+
+
 class Item(models.Model):
     title = models.CharField(max_length=100)
     category = models.CharField(max_length=30, choices=CATEGORY_CHOICES)
     color = models.CharField(max_length=15, choices=COLOR_CHOICES)
     brand = models.CharField(max_length=15, choices=BRAND_CHOICES)
-    size = models.FloatField(null=True)
-    weight = models.FloatField(null=True)
 
-    class Meta:
-        constraints = [
-            models.UniqueConstraint(fields=["category", "size"],
-                                    name="One shoe object can only have one size for the specific stock")
-        ]
+    short_desc = models.CharField(max_length=120, blank=True)
+    long_desc = models.TextField(blank=True)
+    date_added = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return '{} from brand {} and category {} has color {}'.format(self.title, self.brand, self.category, self.color)
+
+
+class ItemMeasures(models.Model):
+    item = models.ForeignKey(Item, on_delete=models.CASCADE)
+    type = models.CharField(max_length=10, choices=(('Size', 'size'), ('Weight', 'weight')))
+    measure = models.FloatField()
+    stock = models.FloatField()
+    price = models.FloatField(default=0.0)
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(fields=["item", "type", "measure"],
+                                    name="One item with a measure can only have a stock.")
+        ]
+
+    def __str__(self):
+        return 'Item {} with measure {} and stock {}'.format(self.item, self.measure, self.stock)
