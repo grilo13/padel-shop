@@ -43,6 +43,14 @@ class Item(models.Model):
 
     is_featured = models.BooleanField(default=False)
 
+    def get_reviews(self):
+        return self.reviews.filter(item=self.id)
+
+    def get_average_rating(self):
+        reviews = self.get_reviews()
+        total_amount = sum(int(review.rating_stars) for review in reviews)
+        return total_amount / reviews.count()
+
     def __str__(self):
         return '{} from brand {} and category {} has color {}'.format(self.title, self.brand, self.category, self.color)
 
@@ -94,3 +102,23 @@ class OrderItem(models.Model):
 
     def __str__(self):
         return 'Order {} has item {}.'.format(self.order, self.item_measure.item.title)
+
+
+RATING = (
+    ('1', '1'),
+    ('2', '2'),
+    ('3', '3'),
+    ('4', '4'),
+    ('5', '5'),
+)
+
+
+class ReviewItem(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    item = models.ForeignKey(Item, related_name='reviews', on_delete=models.CASCADE)
+
+    rating_stars = models.CharField(choices=RATING, max_length=5)
+    rating_text = models.TextField()
+
+    def __str__(self):
+        return 'User {} reviews with {} stars the item {}'.format(self.user, self.rating_stars, self.rating_text)

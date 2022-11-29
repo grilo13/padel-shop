@@ -30,6 +30,29 @@
             {% endfor %}
             </tbody>
         </table>
+        <h1>Reviews</h1>
+        <h2>Average Rating: {{average_rating}}</h2>
+        <table class="styled-table">
+            <thead>
+            <tr>
+                <th>User</th>
+                <th>Item Title</th>
+                <th>Rating Stars</th>
+                <th>Rating Text</th>
+            </tr>
+            </thead>
+
+            <tbody>
+            {% for review in reviews %}
+            <tr>
+                <td>{{review.user.username}}</td>
+                <td>{{review.item.title}}</td>
+                <td>{{review.rating_stars}}</td>
+                <td>{{review.rating_text}}</td>
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
     </div>
     <a href="{% url 'get_shoes' %}" class="turn-back">Go back
     </a>

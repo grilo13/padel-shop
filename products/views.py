@@ -84,9 +84,13 @@ class GetSpecificShoeInformation(APIView):
             context = {'error': 'Shoe does not exist...'}
             return render(request, 'shoe.html', context)
 
+        reviews = shoe.get_reviews()
+        average_rating = shoe.get_average_rating()
         shoe_availability = ItemMeasures.objects.filter(item=shoe_identifier)
 
-        return render(request, 'shoe.html', context={'shoe': shoe, 'availability': shoe_availability})
+        return render(request, 'shoe.html',
+                      context={'shoe': shoe, 'availability': shoe_availability, 'average_rating': average_rating,
+                               'reviews': reviews})
 
 
 class GetRackets(APIView):
@@ -109,9 +113,13 @@ class GetSpecificRacketInformation(APIView):
         except Item.DoesNotExist:
             return render(request, 'racket.html', context={'error': 'Racket not found...'})
 
+        reviews = racket.get_reviews()
+        average_rating = racket.get_average_rating()
         racket_availability = ItemMeasures.objects.filter(item=racket_identifier)
 
-        return render(request, 'racket.html', context={'racket': racket, 'availability': racket_availability})
+        return render(request, 'racket.html',
+                      context={'racket': racket, 'availability': racket_availability, 'average_rating': average_rating,
+                               'reviews': reviews})
 
 
 class CheckWishlist(APIView):
