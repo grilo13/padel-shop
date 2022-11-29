@@ -17,12 +17,24 @@ import numpy as np
 
 
 # Create your views here.
+class GetOrderItems(APIView):
+    permission_classes = (IsAuthenticated,)
+
+    def get(self, request):
+        user = request.user
+        order = Order.objects.get(user=user)
+        items = order.get_items_in_order()
+        total_items = order.get_number_of_items()
+        amount = order.get_amount()
+        print(items)
+
+        return render(request, 'order.html', context={'order': items, 'total_items': total_items, 'amount': amount})
+
 
 class GetItems(APIView):
     permission_classes = (AllowAny,)
 
     def get(self, request):
-
         order = Order.objects.get(id=1)
         print(order)
         print(order.get_amount())

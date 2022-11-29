@@ -83,6 +83,9 @@ class Order(models.Model):
         items = self.items.all().count()
         return items
 
+    def get_items_in_order(self):
+        return self.items.all()
+
 
 class OrderItem(models.Model):
     order = models.ForeignKey(Order, related_name='items', on_delete=models.CASCADE)
