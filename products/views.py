@@ -7,10 +7,10 @@ from rest_framework.response import Response
 from rest_framework.status import HTTP_200_OK, HTTP_400_BAD_REQUEST
 
 # Serializers
-from .serializers import ShoeSerializer, ShoeAvailabilitySerializer, ItemSerializer, ItemMeasuresSerializer
+from .serializers import ItemSerializer, ItemMeasuresSerializer, UserWishlistSerializer
 
 # Models
-from .models import Shoes, ShoeAvailability, Racket, RacketAvailability, Item, ItemMeasures, Category
+from .models import Item, ItemMeasures, Category, Wishlist
 
 # Numpy
 import numpy as np
@@ -71,24 +71,6 @@ class GetSpecificShoeInformation(APIView):
         return render(request, 'shoe.html', context={'shoe': shoe, 'availability': shoe_availability})
 
 
-class GetAvailabilityShoe(APIView):
-    permission_classes = (AllowAny,)
-
-    def get(self, request):
-        shoe_id = request.GET['shoe_id']
-        shoe_size = request.GET['shoe_size']
-        print(shoe_id, shoe_size)
-
-        if shoe_size is not None:
-            shoe_availability = ShoeAvailability.objects.get(shoe=shoe_id, size=shoe_size)
-            serializer = ShoeAvailabilitySerializer(shoe_availability)
-        else:
-            shoe_availability = ShoeAvailability.objects.get(shoe=shoe_id)
-            serializer = ShoeAvailabilitySerializer(shoe_availability, many=True)
-
-        return Response(serializer.data, status=HTTP_200_OK)
-
-
 class GetRackets(APIView):
     permission_classes = (AllowAny,)
 
@@ -112,3 +94,14 @@ class GetSpecificRacketInformation(APIView):
         racket_availability = ItemMeasures.objects.filter(item=racket_identifier)
 
         return render(request, 'racket.html', context={'racket': racket, 'availability': racket_availability})
+
+
+class CheckWishlist(APIView):
+    permission_classes = (AllowAny,)
+
+    def get(self, request):
+        user = request.user
+
+        wishlist = Wishlist.objects.filter(user=user)
+
+        return render(request, 'wishlist.html', context={'wishlist': wishlist, 'user': user})

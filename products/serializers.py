@@ -1,4 +1,4 @@
-from .models import Shoes, ShoeAvailability, Item, ItemMeasures
+from .models import Item, ItemMeasures, Wishlist
 from rest_framework import serializers
 
 
@@ -14,13 +14,7 @@ class ItemMeasuresSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
-class ShoeSerializer(serializers.ModelSerializer):
+class UserWishlistSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Shoes
-        fields = '__all__'
-
-
-class ShoeAvailabilitySerializer(serializers.ModelSerializer):
-    class Meta:
-        model = ShoeAvailability
-        fields = '__all__'
+        model = Wishlist
+        fields = ['item']

@@ -8,7 +8,7 @@
 <div class="main">
     <div class="racket-description">
         <h2 class="racket-name">Name: {{ racket.title }}</h2>
-        <h2 class="racket-branc">Brand: {{ racket.brand }}</h2>
+        <h2 class="racket-branc">Brand: {{ racket.brand.brand }}</h2>
         <table class="styled-table">
             <thead>
             <tr>
@@ -22,7 +22,7 @@
             <tbody>
             {% for availables in availability %}
             <tr>
-                <td>{{availables.type}}</td>
+                <td>{{availables.type.type}}</td>
                 <td>{{availables.measure}}</td>
                 <td>{{availables.price}}</td>
                 <td>{{availables.stock}}</td>
