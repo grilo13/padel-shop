@@ -70,3 +70,24 @@ class Wishlist(models.Model):
 
     def __str__(self):
         return 'User {} has item {} in wishlist.'.format(self.user, self.item)
+
+
+class Order(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+
+    def get_amount(self):
+        total_amount = sum(int(item.item_measure.price) for item in self.items.all())
+        return total_amount
+
+    def get_number_of_items(self):
+        items = self.items.all().count()
+        return items
+
+
+class OrderItem(models.Model):
+    order = models.ForeignKey(Order, related_name='items', on_delete=models.CASCADE)
+    item_measure = models.ForeignKey(ItemMeasures, related_name='items', on_delete=models.CASCADE)
+    date_added = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return 'Order {} has item {}.'.format(self.order, self.item_measure.item.title)

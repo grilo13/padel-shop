@@ -10,7 +10,7 @@ from rest_framework.status import HTTP_200_OK, HTTP_400_BAD_REQUEST
 from .serializers import ItemSerializer, ItemMeasuresSerializer, UserWishlistSerializer
 
 # Models
-from .models import Item, ItemMeasures, Category, Wishlist
+from .models import Item, ItemMeasures, Category, Wishlist, Order
 
 # Numpy
 import numpy as np
@@ -22,6 +22,12 @@ class GetItems(APIView):
     permission_classes = (AllowAny,)
 
     def get(self, request):
+
+        order = Order.objects.get(id=1)
+        print(order)
+        print(order.get_amount())
+        print(order.get_number_of_items())
+
         items = Item.objects.all()
         serializer = ItemSerializer(items, many=True)
 
