@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Login Page</title>
+</head>
+<body>
+<div class="main">
+    <p class="sign" align="center">Sign in</p>
+    <form class="form1" method="POST" action="{% url 'login_user' %}">
+        {% csrf_token %}
+        <label for="username"></label>
+        <input type="username" class="un" name="username" placeholder="Username" required><br><br>
+        <label for="password"></label>
+        <input type="password" class="pass" name="password" placeholder="Password" required><br><br>
+        <button type="submit" class="login_submit" value="Submit">Login</button>
+    </form>
+    {% if logout %}
+        <h1 class="logout-message" style="color: #213c75">{{ logout }}</h1>
+    {% endif %}
+    {% if error %}
+        <h2 class="login_error">{{ error }}</h2>
+    {% endif %}
+    <p class="forgot" align="center"><a href="#">Forgot Password?</p>
+</div>
+</body>
+</html>

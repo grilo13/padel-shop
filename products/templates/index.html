@@ -32,5 +32,23 @@
     </a>
 <a href="{% url 'get_shoes' %}" class="turn-back">Shoes
     </a>
+  <p><a href="{% url 'login_user' %}" class="login">Login
+    </a></p>
+     {% if user.is_authenticated %}
+            <form action="{% url 'logout_user' %}">
+                <input type="submit" value="Logged out" />
+            </form>
+      {% else %}
+        <h2>You are not logged in.</h2>
+        {% block content4 %}
+           <form action="{% url 'login_user' %}">
+                <input type="submit" value="Go to Login Page" />
+            </form>
+        {% endblock %}
+        {% block content5 %}
+           <a href="{% url 'register_user' %}" class="register-user">Register
+            </a>
+        {% endblock %}
+        {% endif %}
 </body>
 </html>

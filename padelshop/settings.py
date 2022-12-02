@@ -39,7 +39,8 @@ INSTALLED_APPS = [
     # third apps
     'rest_framework',
     # apps
-    'products'
+    'products',
+    'users'
 ]
 
 MIDDLEWARE = [
