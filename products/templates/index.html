@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="{% static 'styles/index.css' %}"/>
     <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
 </head>
 <body>
 <div class="header">
@@ -32,67 +33,26 @@
                 <a href="{% url 'get_shoes' %}" class="btn">Check our products &#8594</a>
             </div>
             <div class="col-2">
-                <div class="app-table">
-                        <table class="styled-table">
-                            <thead>
-                            <tr>
-                                <th>ID</th>
-                                <th>Title</th>
-                                <th>Category</th>
-                                <th>Brand</th>
-                            </tr>
-                            </thead>
-
-                            <tbody>
-                            {% for product in products %}
-                            <tr>
-                                <td>{{product.id}}</td>
-                                <td>{{product.title}}</td>
-                                <td>{{product.category}}</td>
-                                <td>{{product.brand}}</td>
-                            </tr>
-                            {% endfor %}
-                            </tbody>
-                        </table>
-                </div>
-                <a href="{% url 'get_rackets' %}" class="turn-back">Rackets
-                    </a>
-                <a href="{% url 'get_shoes' %}" class="turn-back">Shoes
-                    </a>
-                  <p><a href="{% url 'login_user' %}" class="login">Login
-                    </a></p>
-                     {% if user.is_authenticated %}
-                            <form action="{% url 'logout_user' %}">
-                                <input type="submit" value="Logged out" />
-                            </form>
-                      {% else %}
-                        <h2>You are not logged in.</h2>
-                        {% block content4 %}
-                           <form action="{% url 'login_user' %}">
-                                <input type="submit" value="Go to Login Page" />
-                            </form>
-                        {% endblock %}
-                        {% block content5 %}
-                           <a href="{% url 'register_user' %}" class="register-user">Register
-                            </a>
-                        {% endblock %}
-                        {% endif %}
+                <img src="{% static 'images/padel_background.jpg' %}" alt="Padel Background">
             </div>
         </div>
     </div>
 </div>
 <div class="categories">
     <div class="small-container">
-        <h2>Categories</h2>
+        <h2 class="title">Categories</h2>
         <div class="row">
             <div class="col-3">
                 <img src="{% static 'images/shoes.jpg' %}" alt="Shoes Category">
+                <h4>Shoes</h4>
             </div>
             <div class="col-3">
                 <img src="{% static 'images/racket.jpg' %}" alt="Racket Category">
+                <h4>Rackets</h4>
             </div>
             <div class="col-3">
                 <img src="{% static 'images/acessories.jpeg' %}" alt="Acessories">
+                <h4>Acessories</h4>
             </div>
         </div>
     </div>
@@ -100,15 +60,47 @@
 <!----- Featured Products ------>
 <div class="categories">
     <div class="small-container">
-        <h2>Featured Products</h2>
+        <h2 class="title">Featured Products</h2>
         <div class="row">
-            {% for product in products %}
+            {% for product in featured_products %}
             <div class="col-4">
                 <img src="{% static 'images/default_image.png' %}" alt="Default featured product">
                 <h4>{{product.title}}</h4>
-                <h4>{{product.category}}</h4>
+                <h4>{{product.category.category}}</h4>
+                <h4>{{product.rating}}</h4>
             </div>
             {% endfor %}
+        </div>
+    </div>
+</div>
+<!----- Latest Products 8 products should be shown------>
+<div class="categories">
+    <div class="small-container">
+        <h2 class="title">Latest Products</h2>
+        <div class="row">
+            {% for product in recent_products %}
+            <div class="col-4">
+                <img src="{% static 'images/default_image.png' %}" alt="Default featured product">
+                <h4>{{product.title}}</h4>
+                <h4>{{product.category.category}}</h4>
+                <h4>{{product.rating}}</h4>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+<!----   Footer    ---->
+<div class="footer">
+    <div class="container">
+        <div class="row">
+            <div class="footer-col-1">
+                <h3>Where you can find us?</h3>
+                <ul>
+                    <li>Instagram</li>
+                    <li>Facebook</li>
+                    <li>Linkedin</li>
+                </ul>
+            </div>
         </div>
     </div>
 </div>
