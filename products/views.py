@@ -58,9 +58,9 @@ class GetItemsMeasures(APIView):
 
 class Index(APIView):
     def get(self, request):
-        rackets = Item.objects.order_by("?")
+        items = Item.objects.order_by("?")
 
-        return render(request, 'index.html', context={'products': rackets})
+        return render(request, 'index.html', context={'products': items})
 
 
 class GetShoes(APIView):

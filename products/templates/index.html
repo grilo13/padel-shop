@@ -1,54 +1,116 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <link rel="stylesheet" href="{% static 'styles/index.css' %}"/>
+    <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
 </head>
 <body>
-  <div class="app-table">
-        <table class="styled-table">
-            <thead>
-            <tr>
-                <th>ID</th>
-                <th>Title</th>
-                <th>Category</th>
-                <th>Brand</th>
-            </tr>
-            </thead>
+<div class="header">
+    <div class="container">
+        <div class="navbar">
+            <div class="logo">
+                <img src="{% static 'images/website_logo.png' %}" alt="Logo of the website" width="125px">
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="#">Products</a></li>
+                    <li><a href="#">About</a></li>
+                    <li><a href="#">FAQ</a></li>
+                </ul>
+            </nav>
+            <img src="{% static 'images/cart2.png' %}" alt="Cart Button" width="30px" height="30px">
+        </div>
+        <div class="row">
+            <div class="col-2">
+                <h1>The best Padel Shop <br>to buy your gear!</h1>
+                <p>Many have tried, <br> few have succeeded</p>
+                <a href="{% url 'get_shoes' %}" class="btn">Check our products &#8594</a>
+            </div>
+            <div class="col-2">
+                <div class="app-table">
+                        <table class="styled-table">
+                            <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Title</th>
+                                <th>Category</th>
+                                <th>Brand</th>
+                            </tr>
+                            </thead>
 
-            <tbody>
-            {% for product in products %}
-            <tr>
-                <td>{{product.id}}</td>
-                <td>{{product.title}}</td>
-                <td>{{product.category}}</td>
-                <td>{{product.brand}}</td>
-            </tr>
-            {% endfor %}
-            </tbody>
-        </table>
+                            <tbody>
+                            {% for product in products %}
+                            <tr>
+                                <td>{{product.id}}</td>
+                                <td>{{product.title}}</td>
+                                <td>{{product.category}}</td>
+                                <td>{{product.brand}}</td>
+                            </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                </div>
+                <a href="{% url 'get_rackets' %}" class="turn-back">Rackets
+                    </a>
+                <a href="{% url 'get_shoes' %}" class="turn-back">Shoes
+                    </a>
+                  <p><a href="{% url 'login_user' %}" class="login">Login
+                    </a></p>
+                     {% if user.is_authenticated %}
+                            <form action="{% url 'logout_user' %}">
+                                <input type="submit" value="Logged out" />
+                            </form>
+                      {% else %}
+                        <h2>You are not logged in.</h2>
+                        {% block content4 %}
+                           <form action="{% url 'login_user' %}">
+                                <input type="submit" value="Go to Login Page" />
+                            </form>
+                        {% endblock %}
+                        {% block content5 %}
+                           <a href="{% url 'register_user' %}" class="register-user">Register
+                            </a>
+                        {% endblock %}
+                        {% endif %}
+            </div>
+        </div>
+    </div>
 </div>
-<a href="{% url 'get_rackets' %}" class="turn-back">Rackets
-    </a>
-<a href="{% url 'get_shoes' %}" class="turn-back">Shoes
-    </a>
-  <p><a href="{% url 'login_user' %}" class="login">Login
-    </a></p>
-     {% if user.is_authenticated %}
-            <form action="{% url 'logout_user' %}">
-                <input type="submit" value="Logged out" />
-            </form>
-      {% else %}
-        <h2>You are not logged in.</h2>
-        {% block content4 %}
-           <form action="{% url 'login_user' %}">
-                <input type="submit" value="Go to Login Page" />
-            </form>
-        {% endblock %}
-        {% block content5 %}
-           <a href="{% url 'register_user' %}" class="register-user">Register
-            </a>
-        {% endblock %}
-        {% endif %}
+<div class="categories">
+    <div class="small-container">
+        <h2>Categories</h2>
+        <div class="row">
+            <div class="col-3">
+                <img src="{% static 'images/shoes.jpg' %}" alt="Shoes Category">
+            </div>
+            <div class="col-3">
+                <img src="{% static 'images/racket.jpg' %}" alt="Racket Category">
+            </div>
+            <div class="col-3">
+                <img src="{% static 'images/acessories.jpeg' %}" alt="Acessories">
+            </div>
+        </div>
+    </div>
+</div>
+<!----- Featured Products ------>
+<div class="categories">
+    <div class="small-container">
+        <h2>Featured Products</h2>
+        <div class="row">
+            {% for product in products %}
+            <div class="col-4">
+                <img src="{% static 'images/default_image.png' %}" alt="Default featured product">
+                <h4>{{product.title}}</h4>
+                <h4>{{product.category}}</h4>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
 </body>
 </html>
