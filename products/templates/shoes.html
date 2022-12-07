@@ -1,0 +1,36 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Products available</title>
+</head>
+<body>
+<div class="main">
+    <div class="app-table">
+        <table class="styled-table">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Title</th>
+                <th>Color</th>
+                <th>Brand</th>
+            </tr>
+            </thead>
+
+            <tbody>
+            {% for shoe in shoes %}
+            <tr>
+                <td><a href="{% url 'get_shoe_by_id' shoe.id %}"
+                       class="btn btn-danger btn-sm">{{ shoe.id }}</a></td>
+                <td>{{shoe.title}}</td>
+                <td>{{shoe.color}}</td>
+                <td>{{shoe.brand}}</td>
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+</body>
+</html>

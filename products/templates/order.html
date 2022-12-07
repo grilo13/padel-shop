@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div class="values-in-cart">
+    <table class="styled-table">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Title</th>
+            <th>Color</th>
+            <th>Brand</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        {% for item in order %}
+        <tr>
+            <td>{{item.item_measure.item.id}}</td>
+            <td>{{item.item_measure.item.title}}</td>
+            <td>{{item.item_measure.item.color}}</td>
+            <td>{{item.item_measure.item.brand}}</td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    <h1>Items in the order: {{total_items}}</h1>
+    <h1>Amount of the order: {{amount}}</h1>
+</div>
+</body>
+</html>

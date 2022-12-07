@@ -51,6 +51,14 @@ django = ">=3.0"
 pytz = "*"
 
 [[package]]
+name = "numpy"
+version = "1.23.5"
+description = "NumPy is the fundamental package for array computing with Python."
+category = "main"
+optional = false
+python-versions = ">=3.8"
+
+[[package]]
 name = "pytz"
 version = "2022.6"
 description = "World timezone definitions, modern and historical"
@@ -77,7 +85,7 @@ python-versions = ">=2"
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.8"
-content-hash = "bc698e6b9bbce6081bc49a96403ae199bda3b05f014aa502dc3b6f6bada95b00"
+content-hash = "24019fb5ce13b227d226afdfe07b5bd861bb683734f5d3c0036e93ec321f0ada"
 
 [metadata.files]
 asgiref = [
@@ -104,6 +112,7 @@ asgiref = [
 ]
 django = []
 djangorestframework = []
+numpy = []
 pytz = []
 sqlparse = []
 tzdata = []

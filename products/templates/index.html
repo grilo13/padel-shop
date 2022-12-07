@@ -1,0 +1,108 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="{% static 'styles/index.css' %}"/>
+    <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
+</head>
+<body>
+<div class="header">
+    <div class="container">
+        <div class="navbar">
+            <div class="logo">
+                <img src="{% static 'images/website_logo.png' %}" alt="Logo of the website" width="125px">
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="#">Products</a></li>
+                    <li><a href="#">About</a></li>
+                    <li><a href="#">FAQ</a></li>
+                </ul>
+            </nav>
+            <img src="{% static 'images/cart2.png' %}" alt="Cart Button" width="30px" height="30px">
+        </div>
+        <div class="row">
+            <div class="col-2">
+                <h1>The best Padel Shop <br>to buy your gear!</h1>
+                <p>Many have tried, <br> few have succeeded</p>
+                <a href="{% url 'get_shoes' %}" class="btn">Check our products &#8594</a>
+            </div>
+            <div class="col-2">
+                <img src="{% static 'images/padel_background.jpg' %}" alt="Padel Background">
+            </div>
+        </div>
+    </div>
+</div>
+<div class="categories">
+    <div class="small-container">
+        <h2 class="title">Categories</h2>
+        <div class="row">
+            <div class="col-3">
+                <img src="{% static 'images/shoes.jpg' %}" alt="Shoes Category">
+                <h4>Shoes</h4>
+            </div>
+            <div class="col-3">
+                <img src="{% static 'images/racket.jpg' %}" alt="Racket Category">
+                <h4>Rackets</h4>
+            </div>
+            <div class="col-3">
+                <img src="{% static 'images/acessories.jpeg' %}" alt="Acessories">
+                <h4>Acessories</h4>
+            </div>
+        </div>
+    </div>
+</div>
+<!----- Featured Products ------>
+<div class="categories">
+    <div class="small-container">
+        <h2 class="title">Featured Products</h2>
+        <div class="row">
+            {% for product in featured_products %}
+            <div class="col-4">
+                <img src="{% static 'images/default_image.png' %}" alt="Default featured product">
+                <h4>{{product.title}}</h4>
+                <h4>{{product.category.category}}</h4>
+                <h4>{{product.rating}}</h4>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+<!----- Latest Products 8 products should be shown------>
+<div class="categories">
+    <div class="small-container">
+        <h2 class="title">Latest Products</h2>
+        <div class="row">
+            {% for product in recent_products %}
+            <div class="col-4">
+                <img src="{% static 'images/default_image.png' %}" alt="Default featured product">
+                <h4>{{product.title}}</h4>
+                <h4>{{product.category.category}}</h4>
+                <h4>{{product.rating}}</h4>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+<!----   Footer    ---->
+<div class="footer">
+    <div class="container">
+        <div class="row">
+            <div class="footer-col-1">
+                <h3>Where you can find us?</h3>
+                <ul>
+                    <li>Instagram</li>
+                    <li>Facebook</li>
+                    <li>Linkedin</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

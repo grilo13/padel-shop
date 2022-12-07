@@ -1,0 +1,36 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Rackets available</title>
+</head>
+<body>
+<div class="main">
+    <div class="app-table">
+        <table class="styled-table">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Title</th>
+                <th>Color</th>
+                <th>Brand</th>
+            </tr>
+            </thead>
+
+            <tbody>
+            {% for racket in rackets %}
+            <tr>
+                <td><a href="{% url 'get_racket_by_id' racket.id %}"
+                           class="btn btn-danger btn-sm">{{ racket.id }}</a></td>
+                <td>{{racket.title}}</td>
+                <td>{{racket.color}}</td>
+                <td>{{racket.brand}}</td>
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+</body>
+</html>
