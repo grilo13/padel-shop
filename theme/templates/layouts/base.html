@@ -70,10 +70,12 @@
                     </span>
                     <span class="capitalize ml-2 text-white">All Categories</span>
 
-                    <div class="absolute w-full left-0 top-full bg-white shadow-md divide-y divide-gray-300 divide-dashed opacity-0">
+                    <div class="absolute w-full left-0 top-full bg-white shadow-md divide-y divide-gray-300 divide-dashed opacity-0 group-hover:opacity-100 transition duration-300">
+                        {% for category in categories %}
                         <a href="#" class="px-6 py-3 flex items-center hover:bg-gray-100 transition">
-                            <span class="ml-6 text-gray-600 text-sm">Bedroom</span>
+                            <span class="ml-6 text-gray-600 text-sm">{{category.category}}</span>
                         </a>
+                        {% endfor %}
                     </div>
                 </div>
 
@@ -90,6 +92,98 @@
                 </div>
             </div>
         </nav>
+
+        <!-- display image and description --->
+        <div class="bg-cover bg-no-repeat bg-center py-36" style="background-image: url({% static 'images/padel_background4.jpg' %});" >
+            <div class="container">
+                <h1 class="text-6xl text-white font-medium mb-2 capitalize">
+                    The best quality products for<br>a good padel experience
+                </h1>
+                <p class="text-2xl text-white capitalize">Many have tried, <br> few have succeeded</p>
+            </div>
+        </div>
+        <!-- featured products  --->
+        <div class="container py-16 border-b-4">
+            <h2 class="text-3xl fond-medium text-gray-600 uppercasde mb-10">Hot Products <i class="fas fa-fire pl-1"></i></h2>
+
+            <div class="grid grid-cols-5 gap-3">
+                {% for products in featured_products %}
+                <div class="relative round-sm overflow-hidden group">
+                    <img src="{% static 'images/default_image.png' %}" class="w-full hover:translate-y-0.5">
+                    <a href="#" class="flex items-center justify-center font-medium text-gray-600 text-xl pt-5 hover:text-primary">{{products.title}}</a>
+                    <h4 class="flex items-center justify-center font-medium text-gray-600 text-xl">{{products.get_average_rating}} <i class="fas fa-star"></i></h4>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        <!-- shob by category  --->
+        <div class="container py-16">
+            <h2 class="text-3xl fond-medium text-gray-600 uppercasde mb-10">Shop by Category <i class="fas fa-list pl-1"></i></h2>
+
+            <div class="grid grid-cols-5 gap-3">
+                {% for category in categories %}
+                <div class="relative round-sm overflow-hidden group">
+                    <img src="{% static 'images/default_image.png' %}" class="w-full hover:translate-y-0.5">
+                    <a href="#" class="flex items-center justify-center font-medium text-gray-600 text-xl pt-5 hover:text-primary">{{ category.category}}</a>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        <!-- footer -->
+        <footer class="bg-gray-300 pt-8 pb-12 border-gray-100">
+            <div class="container grid grid-cols-4">
+                <div class="col-span-1 space-y-8">
+                    <img src="{% static 'images/default_image.png' %}" class="w-10">
+                    <p class="flex space-x-6">Just enjoy the ride!</p>
+                </div>
+                <div class="col-span-1 space-y-8">
+                    <h3 class="text-sm font-semibold text-gray-600 uppercase tracking-wider">Our Social Media</h3>
+                    <div class="flex space-x-6 ">
+                        <a href="#" class="text-gray-600 hover:text-primary hover:translate-y-0.5">
+                            <i class="fab fa-facebook"></i>
+                        </a>
+                        <a href="#" class="text-gray-600 hover:text-primary hover:translate-y-0.5">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                        <a href="#" class="text-gray-600 hover:text-primary hover:translate-y-0.5">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                        <a href="#" class="text-gray-600 hover:text-primary hover:translate-y-0.5">
+                            <i class="fab fa-linkedin"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="col-span-1 space-y-6">
+                    <h3 class="text-sm font-semibold text-gray-600 uppercase tracking-wider">FAQ</h3>
+                    <div class="mt-4-space-y-4">
+                        <a href="#" class="text-gray-600 hover:text-primary hover:translate-y-0.5">
+                            <h4 class="capitalize">Tempo estimado de entrega</h4>
+                        </a>
+                        <a href="#" class="text-gray-600 hover:text-primary hover:translate-y-0.5">
+                            <h4 class="capitalize">Politica de Devoluções</h4>
+                        </a>
+                        <a href="#" class="text-gray-600 hover:text-primary hover:translate-y-0.5">
+                            <h4 class="capitalize">Validade dos cupões</h4>
+                        </a>
+                    </div>
+                </div>
+                <div class="col-span-1 space-y-8">
+                    <h3 class="text-sm font-semibold text-gray-600 uppercase tracking-wider">Sponsors</h3>
+                    <div class="mt-4-space-y-4">
+                        <a href="#" class="text-gray-600 hover:text-primary hover:translate-y-0.5">
+                            <h4 class="capitalize">Bullpadel</h4>
+                        </a>
+                        <a href="#" class="text-gray-600 hover:text-primary hover:translate-y-0.5">
+                            <h4 class="capitalize">Wilson</h4>
+                        </a>
+                        <a href="#" class="text-gray-600 hover:text-primary hover:translate-y-0.5">
+                            <h4 class="capitalize">Asics</h4>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </footer>
+
 	</body>
 
 </html>

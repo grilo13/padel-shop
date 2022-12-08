@@ -57,13 +57,11 @@ class GetItemsMeasures(APIView):
 
 class Index(APIView):
     def get(self, request):
-        # recent_products = Item.objects.order_by('-date_added')
-
-        # featured_products = recent_products.filter(is_featured=True)
-
+        featured_products = Item.objects.order_by('-date_added').filter(is_featured=True)
         categories = Category.objects.all()
 
-        return render(request, 'layouts/base.html', context={'categories': categories})
+        return render(request, 'layouts/base.html',
+                      context={'categories': categories, 'featured_products': featured_products})
 
 
 class GetShoes(APIView):
