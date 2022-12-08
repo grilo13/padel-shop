@@ -36,14 +36,13 @@ class GetItems(APIView):
 
     def get(self, request):
         order = Order.objects.get(id=1)
-        print(order)
-        print(order.get_amount())
-        print(order.get_number_of_items())
 
-        items = Item.objects.all()
+        return render(request, 'layouts/base.html')
+
+        """items = Item.objects.all()
         serializer = ItemSerializer(items, many=True)
 
-        return Response(serializer.data, status=HTTP_200_OK)
+        return Response(serializer.data, status=HTTP_200_OK)"""
 
 
 class GetItemsMeasures(APIView):
@@ -58,12 +57,13 @@ class GetItemsMeasures(APIView):
 
 class Index(APIView):
     def get(self, request):
-        recent_products = Item.objects.order_by('-date_added')
+        # recent_products = Item.objects.order_by('-date_added')
 
-        featured_products = recent_products.filter(is_featured=True)
+        # featured_products = recent_products.filter(is_featured=True)
 
-        return render(request, 'index.html', context={'recent_products': recent_products[:8],
-                                                      'featured_products': featured_products[:4]})
+        categories = Category.objects.all()
+
+        return render(request, 'layouts/base.html', context={'categories': categories})
 
 
 class GetShoes(APIView):

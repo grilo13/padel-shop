@@ -1,0 +1,95 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta http-equiv="X-UA-Compatible" content="ie=edge">
+		<title>Tailwind + Django</title>
+		<meta name="description" content="Using tailwind css with django">
+		<meta name="keywords" content=" tailwind + django + css">
+		<meta name="author" content="gr1nch">
+
+		<link rel="stylesheet" href="{% static 'css/output.css' %}">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
+	</head>
+
+	<body>
+        <!--- header  --->
+		<header class="py-4 shadow-sm bg-white">
+			<div class="container flex items-center justify-between">
+				<!-- logo -->
+				<a href="#">
+					<img src="{% static 'images/website_logo.png' %}">
+				</a>
+				<!-- searchbar -->
+                <div class="w-full max-w-xl relative flex">
+                    <span class="absolute left-4 top-3 text-lg text-gray-400">
+                        <i class="fas fa-search"></i>
+                    </span>
+                    <input type="text" class="w-full border border-primary border-r-0 pl-12 py-3 pr-3 rounded-l-md focus:outline-none" placeholder="Search product">
+                    <button class="bg-primary border border-primary text-white px-8 rounder-r-md hover:bg-transparent hover:text-primary transition">Search</button>
+                </div>
+				<!-- login -->
+                <div class="flex items-center space-x-4">
+                        <!--- Wishlist --->
+                        <a href="#" class="text-center text-gray-700 hover:text-primary transition relative">
+                        <div class="text-2xl">
+                            <i class="far fa-heart"></i>
+                        </div>
+                        <div class="text-sx leading-3">Wishlist</div>
+                        <span class="absolute right-1 -top-1 w-5 h-5 rounded-full flex items-center justify-center bg-primary text-white text-xs">8</span>
+                        </a>
+                        <!--- Cart --->
+                        <a href="#" class="text-center text-gray-700 hover:text-primary transition relative">
+                            <div class="text-2xl">
+                                <i class="fas fa-shopping-cart"></i>
+                            </div>
+                            <div class="text-sx leading-3">Cart</div>
+                            <span class="absolute -right-2 -top-1 w-5 h-5 rounded-full flex items-center justify-center bg-primary text-white text-xs">8</span>
+                        </a>
+                        <!--- Account --->
+                        <a href="#" class="text-center text-gray-700 hover:text-primary transition relative">
+                            <div class="text-2xl">
+                                <i class="far fa-user"></i>
+                            </div>
+                            <div class="text-sx leading-3">Account</div>
+                        </a>
+                </div>
+			</div>
+		</header>
+
+        <!--- navbar  --->
+        <nav class="bg-gray-700">
+            <div class="container flex">
+                <!-- all category --->
+                <div class="px-8 py-4 bg-primary flex items-center cursor-pointer relative group">
+                    <span class="text-white">
+                        <i class="fas fa-bars"></i>
+                    </span>
+                    <span class="capitalize ml-2 text-white">All Categories</span>
+
+                    <div class="absolute w-full left-0 top-full bg-white shadow-md divide-y divide-gray-300 divide-dashed opacity-0">
+                        <a href="#" class="px-6 py-3 flex items-center hover:bg-gray-100 transition">
+                            <span class="ml-6 text-gray-600 text-sm">Bedroom</span>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- other references --->
+                <div class="flex items-center justify-between flex-grow pl-12">
+                    <div class="flex items-center space-x-6">
+                        <a href="{% url 'get_shoes' %}" class="text-gray-200 hover:text-white transition">Shoes</a>
+                        <a href="#" class="text-gray-200 hover:text-white transition">Rackets</a>
+                        <a href="#" class="text-gray-200 hover:text-white transition">Sacos e Mochilas</a>
+                        <a href="#" class="text-gray-200 hover:text-white transition">Roupa</a>
+                        <a href="#" class="text-gray-200 hover:text-white transition">Acessórios</a>
+                    </div>
+                    <a href="#" class="text-gray-200 hover:text-white transition">Login/Register</a>
+                </div>
+            </div>
+        </nav>
+	</body>
+
+</html>
