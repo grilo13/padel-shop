@@ -1,0 +1,231 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Product Page</title>
+    <link rel="stylesheet" href="{% static 'css/output.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
+</head>
+<body>
+    <!--- header  --->
+    <header class="py-4 shadow-sm bg-white">
+                <div class="container flex items-center justify-between">
+                    <!-- logo -->
+                    <a href="#">
+                        <img src="{% static 'images/website_logo.png' %}">
+                    </a>
+                    <!-- searchbar -->
+                    <div class="w-full max-w-xl relative flex">
+                        <span class="absolute left-4 top-3 text-lg text-gray-400">
+                            <i class="fas fa-search"></i>
+                        </span>
+                        <input type="text" class="w-full border border-primary border-r-0 pl-12 py-3 pr-3 rounded-l-md focus:outline-none" placeholder="Search product">
+                        <button class="bg-primary border border-primary text-white px-8 rounder-r-md hover:bg-transparent hover:text-primary transition">Search</button>
+                    </div>
+                    <!-- login -->
+                    <div class="flex items-center space-x-4">
+                            <!--- Wishlist --->
+                            <a href="#" class="text-center text-gray-700 hover:text-primary transition relative">
+                            <div class="text-2xl">
+                                <i class="far fa-heart"></i>
+                            </div>
+                            <div class="text-sx leading-3">Wishlist</div>
+                            {% if request.user.is_authenticated %}
+                                <span class="absolute right-1 -top-1 w-5 h-5 rounded-full flex items-center justify-center bg-primary text-white text-xs">{{wishlist_count}}</span>
+                            {% else %}
+                            {% endif %}
+                            </a>
+                            <!--- Cart --->
+                            <a href="#" class="text-center text-gray-700 hover:text-primary transition relative">
+                                <div class="text-2xl">
+                                    <i class="fas fa-shopping-cart"></i>
+                                </div>
+                                <div class="text-sx leading-3">Cart</div>
+                                <span class="absolute -right-2 -top-1 w-5 h-5 rounded-full flex items-center justify-center bg-primary text-white text-xs">8</span>
+                            </a>
+                            <!--- Account --->
+                            <a href="#" class="text-center text-gray-700 hover:text-primary transition relative">
+                                <div class="text-2xl">
+                                    <i class="far fa-user"></i>
+                                </div>
+                                <div class="text-sx leading-3">Account</div>
+                            </a>
+                    </div>
+                </div>
+            </header>
+
+    <!--- navbar  --->
+    <nav class="bg-gray-700">
+                <div class="container flex">
+                    <!-- all category --->
+                    <div class="px-8 py-4 bg-primary flex items-center cursor-pointer relative group">
+                        <span class="text-white">
+                            <i class="fas fa-bars"></i>
+                        </span>
+                        <span class="capitalize ml-2 text-white">All Categories</span>
+
+                        <div class="absolute w-full left-0 top-full bg-white shadow-md divide-y divide-gray-300 divide-dashed opacity-0 group-hover:opacity-100 transition duration-300">
+                            {% for category in categories %}
+                            <a href="#" class="px-6 py-3 flex items-center hover:bg-gray-100 transition">
+                                <span class="ml-6 text-gray-600 text-sm">{{category.category}}</span>
+                            </a>
+                            {% endfor %}
+                        </div>
+                    </div>
+
+                    <!-- other references --->
+                    <div class="flex items-center justify-between flex-grow pl-12">
+                        <div class="flex items-center space-x-6">
+                            <a href="{% url 'get_shoes' %}" class="text-gray-200 hover:text-white transition">Shoes</a>
+                            <a href="#" class="text-gray-200 hover:text-white transition">Rackets</a>
+                            <a href="#" class="text-gray-200 hover:text-white transition">Sacos e Mochilas</a>
+                            <a href="#" class="text-gray-200 hover:text-white transition">Roupa</a>
+                            <a href="#" class="text-gray-200 hover:text-white transition">Acessórios</a>
+                        </div>
+                        <a href="#" class="text-gray-200 hover:text-white transition">Login/Register</a>
+                    </div>
+                </div>
+            </nav>
+
+    <!--- product view --->
+    <div class="container grid grid-cols-2 gap-6 mt-10 mb-10">
+        <!-- product image -->
+        <div>
+            <img src="{% static 'images/default_image.png' %}" class="w-full">
+            <div class="grid grid-cols-5 mt-4">
+                <img src="{% static 'images/default_image.png' %}" class="w-full cursor-pointer border border-primary">
+                <img src="{% static 'images/default_image.png' %}" class="w-full cursor-pointer border border-primary">
+                <img src="{% static 'images/default_image.png' %}" class="w-full cursor-pointer border border-primary">
+                <img src="{% static 'images/default_image.png' %}" class="w-full cursor-pointer border border-primary">
+                <img src="{% static 'images/default_image.png' %}" class="w-full cursor-pointer border border-primary">
+            </div>
+        </div>
+
+        <!-- product content  -->
+        <div>
+            <h2 class="text-3xl font-medium uppercase mb-2">{{item_measures.0.item.title}}</h2>
+            <div class="flex items-center mb-4">
+                <h2 class="text-md uppercase">{{item_measures.0.item.get_average_rating}} <i class="fas fa-star"></i></h2>
+                <div class="text-md text-gray-400 ml-3">({{item_measures.0.item.get_reviews.count}} reviews)</div>
+            </div>
+            <div>
+                <p class="text-gray-600 font-semibold space-x-2">
+                    <span>Availability:</span>
+                    <span class="text-green-600">In stock</span>
+                </p>
+                <p class="text-gray-600 font-semibold space-x-2">
+                    <span>Brand:</span>
+                    <span class="text-gray-400 font-medium">{{item_measures.0.item.brand.brand}}</span>
+                </p>
+                <p class="text-gray-600 font-semibold space-x-2">
+                    <span>Category:</span>
+                    <span class="text-gray-400 font-medium">{{item_measures.0.item.category.category}}</span>
+                </p>
+                <p class="text-gray-600 font-semibold space-x-2">
+                    <span>Unique code:</span>
+                    <span class="text-gray-400 font-medium">{{item_measures.0.item.id}}</span>
+                </p>
+                <div class="felx items-baseline mb-1 space-x-2 font-roboto mt-4">
+                    <p class="text-2xl text-primary font-semibold">{{item_measures.0.price}} $</p>
+                </div>
+                <p class="text-medium text-gray-600">
+                    {{item_measures.0.item.short_desc}}
+                </p>
+                <p>
+                    <div class="pt-4">
+                        <h3 class="text-md font-semibold text-gray-600 uppercase mb-1">{{item_measures.0.type.type}}</h3>
+                        <div class="flex items-center gap-2">
+                            <div class="measure-selector">
+                                {% for values in item_measures %}
+                                <input type="radio" name="measure" class="hidden" id="{{value.measure}}">
+                                <label for="{{value.measure}}" class="text-xs border border-gray-200 round-sm h-6 w-6 flex items-center justify-center cursor-pointer shadow-md">
+                                    {{values.measure}}
+                                </label>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                </p>
+            </div>
+
+            <!--- quantity --->
+            <div class="mt-4">
+                <label for="countries" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Quantity</label>
+                <select id="countries" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                  <option selected>Choose a country</option>
+                  <option value="US">United States</option>
+                  <option value="CA">Canada</option>
+                  <option value="FR">France</option>
+                  <option value="DE">Germany</option>
+                </select>
+            </div>
+
+            <!--- cart button --->
+            <div class="flex gap-3 border-b border-gray-200 pb-5 mt-6">
+                <a href="#" class="bg-primary border border-primary text-white px-8 py-2 font-medium rounded uppercase flex items-center gap-2 hover:bg-transparent hover:text-primary">
+                    <i class="fas fa-shopping-bag"></i>Add to cart
+                </a>
+                <a href="#" class="bg-gray-300 border-gray-300 text-gray-600 px-8 py-2 font-medium rounded uppercase flex items-center gap-2 hover:bg-transparent hover:text-primary">
+                    <i class="fas fa-heart"></i>Add to wishlist
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- footer -->
+    <footer class="bg-gray-300 pt-8 pb-12 border-gray-100">
+            <div class="container grid grid-cols-4">
+                <div class="col-span-1 space-y-8">
+                    <img src="{% static 'images/default_image.png' %}" class="w-10">
+                    <p class="flex space-x-6">Just enjoy the ride!</p>
+                </div>
+                <div class="col-span-1 space-y-8">
+                    <h3 class="text-sm font-semibold text-gray-600 uppercase tracking-wider">Our Social Media</h3>
+                    <div class="flex space-x-6 ">
+                        <a href="#" class="text-gray-600 hover:text-primary hover:translate-y-0.5">
+                            <i class="fab fa-facebook"></i>
+                        </a>
+                        <a href="#" class="text-gray-600 hover:text-primary hover:translate-y-0.5">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                        <a href="#" class="text-gray-600 hover:text-primary hover:translate-y-0.5">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                        <a href="#" class="text-gray-600 hover:text-primary hover:translate-y-0.5">
+                            <i class="fab fa-linkedin"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="col-span-1 space-y-6">
+                    <h3 class="text-sm font-semibold text-gray-600 uppercase tracking-wider">FAQ</h3>
+                    <div class="mt-4-space-y-4">
+                        <a href="#" class="text-gray-600 hover:text-primary hover:translate-y-0.5">
+                            <h4 class="capitalize">Tempo estimado de entrega</h4>
+                        </a>
+                        <a href="#" class="text-gray-600 hover:text-primary hover:translate-y-0.5">
+                            <h4 class="capitalize">Politica de Devoluções</h4>
+                        </a>
+                        <a href="#" class="text-gray-600 hover:text-primary hover:translate-y-0.5">
+                            <h4 class="capitalize">Validade dos cupões</h4>
+                        </a>
+                    </div>
+                </div>
+                <div class="col-span-1 space-y-6">
+                    <h3 class="text-sm font-semibold text-gray-600 uppercase tracking-wider">Sponsors</h3>
+                    <div class="mt-4-space-y-4">
+                        <a href="#" class="text-gray-600 hover:text-primary hover:translate-y-0.5">
+                            <h4 class="capitalize">Bullpadel</h4>
+                        </a>
+                        <a href="#" class="text-gray-600 hover:text-primary hover:translate-y-0.5">
+                            <h4 class="capitalize">Wilson</h4>
+                        </a>
+                        <a href="#" class="text-gray-600 hover:text-primary hover:translate-y-0.5">
+                            <h4 class="capitalize">Asics</h4>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </footer>
+</body>
+</html>

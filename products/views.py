@@ -11,10 +11,10 @@ from .serializers import ItemSerializer, ItemMeasuresSerializer, UserWishlistSer
 
 # Models
 from .models import Item, ItemMeasures, Category, Wishlist, Order
+from django.contrib.auth.models import User, AnonymousUser
 
 # Numpy
 import numpy as np
-
 
 # Create your views here.
 class GetOrderItems(APIView):
@@ -51,8 +51,17 @@ class GetItemsMeasures(APIView):
     def get(self, request, item_identifier):
         item_measures = ItemMeasures.objects.filter(item=item_identifier)
         featured_products = Item.objects.order_by('-date_added').filter(is_featured=True)
-        return render(request, 'item.html',
-                      context={'item_measures': item_measures, 'featured_products': featured_products})
+
+        user = request.user
+        if user is not None:
+            wishlist = Wishlist.objects.filter(user=user).count()
+            print(wishlist)
+            return render(request, 'layouts/product.html',
+                          context={'item_measures': item_measures, 'featured_products': featured_products,
+                                   'wishlist_count': wishlist})
+        else:
+            return render(request, 'layouts/product.html',
+                          context={'item_measures': item_measures, 'featured_products': featured_products})
 
 
 class Index(APIView):
@@ -60,8 +69,15 @@ class Index(APIView):
         featured_products = Item.objects.order_by('-date_added').filter(is_featured=True)
         categories = Category.objects.all()
 
-        return render(request, 'layouts/base.html',
-                      context={'categories': categories, 'featured_products': featured_products})
+        user = request.user
+        if type(user) is not AnonymousUser:
+            wishlist = Wishlist.objects.filter(user=user).count()
+            return render(request, 'layouts/base.html',
+                          context={'categories': categories, 'featured_products': featured_products,
+                                   'wishlist_count': wishlist})
+        else:
+            return render(request, 'layouts/base.html',
+                          context={'categories': categories, 'featured_products': featured_products})
 
 
 class GetShoes(APIView):
