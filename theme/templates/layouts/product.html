@@ -42,14 +42,21 @@
                                     <i class="fas fa-shopping-cart"></i>
                                 </div>
                                 <div class="text-sx leading-3">Cart</div>
-                                <span class="absolute -right-2 -top-1 w-5 h-5 rounded-full flex items-center justify-center bg-primary text-white text-xs">8</span>
+                                {% if request.user.is_authenticated %}
+                                    <span class="absolute -right-2 -top-1 w-5 h-5 rounded-full flex items-center justify-center bg-primary text-white text-xs">{{cart_items}}</span>
+                                {% else %}
+                                {% endif %}
                             </a>
                             <!--- Account --->
                             <a href="#" class="text-center text-gray-700 hover:text-primary transition relative">
                                 <div class="text-2xl">
                                     <i class="far fa-user"></i>
                                 </div>
-                                <div class="text-sx leading-3">Account</div>
+                                {% if request.user.is_authenticated %}
+                                <div class="text-sx leading-3">{{request.user.username}}</div>
+                                {% else %}
+                                    <div class="text-sx leading-3">Account</div>
+                                {% endif %}
                             </a>
                     </div>
                 </div>
@@ -77,6 +84,7 @@
                     <!-- other references --->
                     <div class="flex items-center justify-between flex-grow pl-12">
                         <div class="flex items-center space-x-6">
+                            <a href="{% url 'index' %}" class="text-gray-200 hover:text-white transition">Home</a>
                             <a href="{% url 'get_shoes' %}" class="text-gray-200 hover:text-white transition">Shoes</a>
                             <a href="#" class="text-gray-200 hover:text-white transition">Rackets</a>
                             <a href="#" class="text-gray-200 hover:text-white transition">Sacos e Mochilas</a>
@@ -166,9 +174,25 @@
                 <a href="#" class="bg-primary border border-primary text-white px-8 py-2 font-medium rounded uppercase flex items-center gap-2 hover:bg-transparent hover:text-primary">
                     <i class="fas fa-shopping-bag"></i>Add to cart
                 </a>
-                <a href="#" class="bg-gray-300 border-gray-300 text-gray-600 px-8 py-2 font-medium rounded uppercase flex items-center gap-2 hover:bg-transparent hover:text-primary">
-                    <i class="fas fa-heart"></i>Add to wishlist
-                </a>
+                {% if is_wishlist %}
+                    <form action="{% url 'add_to_wishlist' item_measures.0.item.id %}" method="get" class="bg-gray-300 border-gray-300 text-gray-600 px-8 py-2 font-medium rounded uppercase flex items-center gap-2 hover:bg-transparent hover:text-primary">
+                        {% csrf_token %}
+                        <div>
+                            <button type="submit" value="Submit">
+                                <h2 class="text-gray-600 font-medium uppercase"><i class="fas fa-trash"></i>Remove from wishlist</h2>
+                            </button>
+                        </div>
+                    </form>
+                {% else %}
+                    <form action="{% url 'add_to_wishlist' item_measures.0.item.id %}" method="post" class="bg-gray-300 border-gray-300 text-gray-600 px-8 py-2 font-medium rounded uppercase flex items-center gap-2 hover:bg-transparent hover:text-primary">
+                        {% csrf_token %}
+                        <div>
+                            <button type="submit" value="Submit">
+                                <h2 class="text-gray-600 font-medium uppercase"><i class="fas fa-heart"></i>Add to wishlist</h2>
+                            </button>
+                        </div>
+                    </form>
+                {% endif %}
             </div>
         </div>
     </div>
