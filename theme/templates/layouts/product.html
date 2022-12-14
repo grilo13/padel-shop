@@ -208,7 +208,7 @@
 </div>
 
 <!-- product details --->
-<div class="container pb-16">
+<div class="container pb-10">
     <h3 class="border-b border-gray-200 font-roboto text-gray-600 pb-3 capitalize">Product details</h3>
     <div class="w-3/5 pt-6 mb-5">
         <p class="text-medium text-gray-400">
@@ -238,6 +238,47 @@
             <th class="py-2 px-4 border border-gray-300 w-40">{{item_measures.0.item.date_added}}</th>
         </tr>
     </table>
+</div>
+
+<!-- reviews --->
+<div class="container pb-10">
+    <h3 class="border-b border-gray-200 font-roboto text-gray-600 pb-3 capitalize">Reviews</h3>
+    <div class="container grid grid-cols-2 gap-6 mt-10 mb-10">
+        {% for review in item_measures.0.item.get_reviews %}
+        <div>
+            <div class="grid grid-cols-2 mt-4">
+                <div>
+                    <h1 class="font-medium">{{review.user}}</h1>
+                    <h4 class="font-sm">{{review.rating_stars}} <i class="fas fa-star"></i></h4>
+                </div>
+                <div>
+                    <h4 class="font-sm">{{review.rating_text}}</h4>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+<!-- related products  --->
+<div class="container py-16 border-b-4">
+    <h2 class="text-3xl fond-medium text-gray-600 uppercasde mb-10">Related Products</h2>
+
+    <div class="grid grid-cols-5 gap-3">
+        {% for products in related_products %}
+        <div class="relative round-sm overflow-hidden group">
+            <img src="{% static 'images/default_image.png' %}" class="w-full hover:translate-y-0.5">
+            <a href="{% url 'get_items_measures' products.id %}"
+               class="flex items-center justify-center font-medium text-gray-600 text-xl pt-5 hover:text-primary">{{products.title}}</a>
+            {% if products.get_average_rating == 0 %}
+            <h4 class="flex items-center justify-center text-gray-600 text-xl">No available reviews</h4>
+            {% else %}
+            <h4 class="flex items-center justify-center font-medium text-gray-600 text-xl">
+                {{products.get_average_rating}} <i class="fas fa-star"></i></h4>
+            {% endif %}
+        </div>
+        {% endfor %}
+    </div>
 </div>
 
 <!-- footer -->

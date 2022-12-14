@@ -46,7 +46,7 @@ class GetItemsMeasures(APIView):
 
     def get(self, request, item_identifier):
         item_measures = ItemMeasures.objects.filter(item=item_identifier)
-        featured_products = Item.objects.order_by('-date_added').filter(is_featured=True)
+        related_products = Item.objects.order_by('-date_added').filter(category=item_measures[0].item.category.id)
 
         user = request.user
         if user is not None:
@@ -62,12 +62,12 @@ class GetItemsMeasures(APIView):
             else:
                 number_of_items_cart = user_order.get_number_of_items()
             return render(request, 'layouts/product.html',
-                          context={'item_measures': item_measures, 'featured_products': featured_products,
+                          context={'item_measures': item_measures, 'related_products': related_products,
                                    'wishlist_count': wishlist.count(), 'cart_items': number_of_items_cart,
                                    'is_wishlist': is_wishlist})
         else:
             return render(request, 'layouts/product.html',
-                          context={'item_measures': item_measures, 'featured_products': featured_products})
+                          context={'item_measures': item_measures, 'related_products': related_products})
 
 
 class Index(APIView):

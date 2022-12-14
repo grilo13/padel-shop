@@ -48,6 +48,8 @@ class Item(models.Model):
 
     def get_average_rating(self):
         reviews = self.get_reviews()
+        if len(reviews) == 0:
+            return 0
         total_amount = sum(int(review.rating_stars) for review in reviews)
         return total_amount / reviews.count()
 
