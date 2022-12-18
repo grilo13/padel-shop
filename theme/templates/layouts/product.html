@@ -242,22 +242,27 @@
 
 <!-- reviews --->
 <div class="container pb-10">
-    <h3 class="border-b border-gray-200 font-roboto text-gray-600 pb-3 capitalize">Reviews</h3>
-    <div class="container grid grid-cols-2 gap-6 mt-10 mb-10">
-        {% for review in item_measures.0.item.get_reviews %}
-        <div>
-            <div class="grid grid-cols-2 mt-4">
-                <div>
-                    <h1 class="font-medium">{{review.user}}</h1>
-                    <h4 class="font-sm">{{review.rating_stars}} <i class="fas fa-star"></i></h4>
+    <h3 class="border-b border-gray-200 font-roboto text-gray-600 pb-2 mb-4 capitalize">Reviews</h3>
+        {% if item_measures.0.item.get_reviews.count == 0 %}
+            <h3 class="font-roboto text-gray-400 pb-3">No reviews available for this product.</h3>
+        {% else %}
+            <div class="container grid grid-cols-2 gap-6 mt-10 mb-10">
+                {% for review in item_measures.0.item.get_reviews %}
+                <div class="border-b border-gray-200">
+                    <div class="grid grid-cols-2 mt-4">
+                        <div>
+                            <img src="{% static 'images/default_image.png' %}" class="w-1/4 cursor-pointer">
+                            <h1 class="font-medium">{{review.user}}</h1>
+                            <h4 class="font-sm">{{review.rating_stars}} <i class="fas fa-star"></i></h4>
+                        </div>
+                        <div>
+                            <h4 class="font-sm">{{review.rating_text}}</h4>
+                        </div>
+                    </div>
                 </div>
-                <div>
-                    <h4 class="font-sm">{{review.rating_text}}</h4>
-                </div>
+                {% endfor %}
             </div>
-        </div>
-        {% endfor %}
-    </div>
+        {% endif %}
 </div>
 
 <!-- related products  --->
