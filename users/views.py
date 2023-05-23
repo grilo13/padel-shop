@@ -47,8 +47,10 @@ class LogoutUser(APIView):
     permission_classes = (IsAuthenticated,)
 
     def get(self, request):
+        print("here")
         logout(request)
-        return render(request, 'index.html', context={'logout': 'Just logged out successfully.'})
+        # return render(request, 'base.html', context={'logout': 'Just logged out successfully.'})
+        return redirect('index')
 
 
 class RegisterUser(APIView):

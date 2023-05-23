@@ -4,14 +4,16 @@ from rest_framework.generics import GenericAPIView
 from rest_framework.permissions import AllowAny, IsAuthenticated, IsAdminUser
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework.status import HTTP_200_OK, HTTP_400_BAD_REQUEST
+from rest_framework.status import HTTP_200_OK, HTTP_400_BAD_REQUEST, HTTP_401_UNAUTHORIZED
 
 # Serializers
-from .serializers import ItemSerializer, ItemMeasuresSerializer, UserWishlistSerializer
+from .serializers import ItemSerializer, ItemMeasuresSerializer, UserWishlistSerializer, UserLoginSerializer
 
 # Models
 from .models import Item, ItemMeasures, Category, Wishlist, Order
 from django.contrib.auth.models import User, AnonymousUser
+
+from django.contrib.auth import authenticate, login, password_validation, logout
 
 # Numpy
 import numpy as np
