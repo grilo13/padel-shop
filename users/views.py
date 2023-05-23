@@ -16,9 +16,9 @@ class LoginUser(APIView):
         if request.user.is_authenticated:
             return redirect('index')
 
-        return render(request, 'login.html')
+        return render(request, 'authentication.html')
 
-    def post(self, request, *args, **kwargs):
+    def post(self, request):
 
         if request.user.is_authenticated:
             return redirect('index')
@@ -30,12 +30,12 @@ class LoginUser(APIView):
         user = User.objects.filter(username=username)
 
         if not user.exists():
-            return render(request, 'login.html', {'error': 'Username don\'t exist.'})
+            return render(request, 'authentication.html', {'error': 'Username don\'t exist.'})
 
         user = user[0]
 
         if not user.check_password(password):
-            return render(request, 'login.html', {'error': 'Password isn\'t correct'})
+            return render(request, 'authentication.html', {'error': 'Password isn\'t correct'})
 
         user = authenticate(username=username, password=password)
         login(request, user)
@@ -58,9 +58,9 @@ class RegisterUser(APIView):
 
     def get(self, request):
 
-        return render(request, 'register.html')
+        return render(request, 'authentication.html')
 
-    def post(self, request, *args, **kwargs):
+    def post(self, request):
         data = request.data
         username = data.get('username')
         password = data.get('password')
@@ -69,7 +69,7 @@ class RegisterUser(APIView):
         validate_user = User.objects.filter(username=username)
 
         if validate_user.exists():
-            return render(request, 'register.html', {'error': 'Username {} already in use.'.format(username)})
+            return render(request, 'authentication.html', {'error': 'Username {} already in use.'.format(username)})
 
         try:
             password_validation.validate_password(password)
@@ -85,8 +85,7 @@ class RegisterUser(APIView):
         user.save()
 
         user = authenticate(username=username,
-                            password=password)  # If the given credentials are valid, return a User object.
-        login(request, user)  # Persist a user id and a backend in the request. This way a user doesn't
-        # have to reauthenticate on every request.
+                            password=password)
+        login(request, user)
 
         return redirect('index')
