@@ -1,16 +1,19 @@
 import json
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from rest_framework.generics import GenericAPIView
 from rest_framework.permissions import AllowAny, IsAuthenticated, IsAdminUser
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework.status import HTTP_200_OK, HTTP_400_BAD_REQUEST
+from rest_framework.status import HTTP_200_OK, HTTP_400_BAD_REQUEST, HTTP_401_UNAUTHORIZED
 
 # Serializers
-from .serializers import ItemSerializer, ItemMeasuresSerializer, UserWishlistSerializer
+from .serializers import ItemSerializer, ItemMeasuresSerializer, UserWishlistSerializer, UserLoginSerializer
 
 # Models
 from .models import Item, ItemMeasures, Category, Wishlist, Order
+from django.contrib.auth.models import User, AnonymousUser
+
+from django.contrib.auth import authenticate, login, password_validation, logout
 
 # Numpy
 import numpy as np
@@ -36,14 +39,8 @@ class GetItems(APIView):
 
     def get(self, request):
         order = Order.objects.get(id=1)
-        print(order)
-        print(order.get_amount())
-        print(order.get_number_of_items())
 
-        items = Item.objects.all()
-        serializer = ItemSerializer(items, many=True)
-
-        return Response(serializer.data, status=HTTP_200_OK)
+        return render(request, 'layouts/base.html')
 
 
 class GetItemsMeasures(APIView):
@@ -51,19 +48,50 @@ class GetItemsMeasures(APIView):
 
     def get(self, request, item_identifier):
         item_measures = ItemMeasures.objects.filter(item=item_identifier)
-        featured_products = Item.objects.order_by('-date_added').filter(is_featured=True)
-        return render(request, 'item.html',
-                      context={'item_measures': item_measures, 'featured_products': featured_products})
+        related_products = Item.objects.order_by('-date_added').filter(category=item_measures[0].item.category.id)
+
+        user = request.user
+        if user is not None:
+            wishlist = Wishlist.objects.filter(user=user)
+            if wishlist.filter(item=item_measures[0].item).count() > 0:
+                is_wishlist = True
+            else:
+                is_wishlist = False
+
+            user_order = Order.objects.filter(user=user).first()
+            if user_order is None:
+                number_of_items_cart = 0
+            else:
+                number_of_items_cart = user_order.get_number_of_items()
+            return render(request, 'layouts/product.html',
+                          context={'item_measures': item_measures, 'related_products': related_products,
+                                   'wishlist_count': wishlist.count(), 'cart_items': number_of_items_cart,
+                                   'is_wishlist': is_wishlist})
+        else:
+            return render(request, 'layouts/product.html',
+                          context={'item_measures': item_measures, 'related_products': related_products})
 
 
 class Index(APIView):
     def get(self, request):
-        recent_products = Item.objects.order_by('-date_added')
+        featured_products = Item.objects.order_by('-date_added').filter(is_featured=True)
+        categories = Category.objects.all()
 
-        featured_products = recent_products.filter(is_featured=True)
+        user = request.user
+        if type(user) is not AnonymousUser:
+            wishlist = Wishlist.objects.filter(user=user).count()
+            user_order = Order.objects.filter(user=user).first()
+            if user_order is None:
+                number_of_items_cart = 0
+            else:
+                number_of_items_cart = user_order.get_number_of_items()
 
-        return render(request, 'index.html', context={'recent_products': recent_products[:8],
-                                                      'featured_products': featured_products[:4]})
+            return render(request, 'layouts/base.html',
+                          context={'categories': categories, 'featured_products': featured_products,
+                                   'wishlist_count': wishlist, 'cart_items': number_of_items_cart})
+        else:
+            return render(request, 'layouts/base.html',
+                          context={'categories': categories, 'featured_products': featured_products})
 
 
 class GetShoes(APIView):
@@ -126,7 +154,7 @@ class GetSpecificRacketInformation(APIView):
 
 
 class CheckWishlist(APIView):
-    permission_classes = (AllowAny,)
+    permission_classes = (IsAuthenticated,)
 
     def get(self, request):
         user = request.user
@@ -134,3 +162,20 @@ class CheckWishlist(APIView):
         wishlist = Wishlist.objects.filter(user=user)
 
         return render(request, 'wishlist.html', context={'wishlist': wishlist, 'user': user})
+
+
+class AddItemToWishlist(APIView):
+    permission_classes = (IsAuthenticated,)
+
+    def get(self, request, product):
+        user = request.user
+        wishlist = Wishlist.objects.filter(user=user, item=Item.objects.get(id=product))
+        wishlist.delete()
+
+        return redirect('get_items_measures', item_identifier=product)
+
+    def post(self, request, product):
+        user = request.user
+        wishlist = Wishlist.objects.create(user=user, item=Item.objects.get(id=product))
+
+        return redirect('get_items_measures', item_identifier=product)

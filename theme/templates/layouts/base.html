@@ -1,0 +1,206 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta http-equiv="X-UA-Compatible" content="ie=edge">
+		<title>Tailwind + Django</title>
+		<meta name="description" content="Using tailwind css with django">
+		<meta name="keywords" content=" tailwind + django + css">
+		<meta name="author" content="grilo">
+
+		<link rel="stylesheet" href="{% static 'css/output.css' %}">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
+	</head>
+
+	<body>
+        <!--- header  --->
+		<header class="py-4 shadow-sm bg-white">
+			<div class="container flex items-center justify-between">
+				<!-- logo -->
+				<a href="#">
+					<img src="{% static 'images/website_logo.png' %}">
+				</a>
+				<!-- searchbar -->
+                <div class="w-full max-w-xl relative flex">
+                    <span class="absolute left-4 top-3 text-lg text-gray-400">
+                        <i class="fas fa-search"></i>
+                    </span>
+                    <input type="text" class="w-full border border-primary border-r-0 pl-12 py-3 pr-3 rounded-l-md focus:outline-none" placeholder="Search product">
+                    <button class="bg-primary border border-primary text-white px-8 rounder-r-md hover:bg-transparent hover:text-primary transition">Search</button>
+                </div>
+				<!-- login -->
+                <div class="flex items-center space-x-4">
+                        <!--- Wishlist --->
+                        <a href="#" class="text-center text-gray-700 hover:text-primary transition relative">
+                        <div class="text-2xl">
+                            <i class="far fa-heart"></i>
+                        </div>
+                        <div class="text-sx leading-3">Wishlist</div>
+                        {% if request.user.is_authenticated %}
+                            <span class="absolute right-1 -top-1 w-5 h-5 rounded-full flex items-center justify-center bg-primary text-white text-xs">{{wishlist_count}}</span>
+                        {% else %}
+                        {% endif %}
+                        </a>
+                        <!--- Cart --->
+                        <a href="#" class="text-center text-gray-700 hover:text-primary transition relative">
+                            <div class="text-2xl">
+                                <i class="fas fa-shopping-cart"></i>
+                            </div>
+                            <div class="text-sx leading-3">Cart</div>
+                            {% if request.user.is_authenticated %}
+                            <span class="absolute -right-2 -top-1 w-5 h-5 rounded-full flex items-center justify-center bg-primary text-white text-xs">{{cart_items}}</span>
+                            {% else %}
+                            {% endif %}
+                        </a>
+                        <!--- Account --->
+                        <a href="#" class="text-center text-gray-700 hover:text-primary transition relative">
+                            <div class="text-2xl">
+                                <i class="far fa-user"></i>
+                            </div>
+                            {% if request.user.is_authenticated %}
+                                <div class="text-sx leading-3">{{request.user.username}}</div>
+                            {% else %}
+                                <div class="text-sx leading-3">Account</div>
+                            {% endif %}
+                        </a>
+                </div>
+			</div>
+		</header>
+
+        <!--- navbar  --->
+        <nav class="bg-gray-700">
+            <div class="container flex">
+                <!-- all category --->
+                <div class="px-8 py-4 bg-primary flex items-center cursor-pointer relative group">
+                    <span class="text-white">
+                        <i class="fas fa-bars"></i>
+                    </span>
+                    <span class="capitalize ml-2 text-white">All Categories</span>
+
+                    <div class="absolute w-full left-0 top-full bg-white shadow-md divide-y divide-gray-300 divide-dashed opacity-0 group-hover:opacity-100 transition duration-300">
+                        {% for category in categories %}
+                        <a href="#" class="px-6 py-3 flex items-center hover:bg-gray-100 transition">
+                            <span class="ml-6 text-gray-600 text-sm">{{category.category}}</span>
+                        </a>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <!-- other references --->
+                <div class="flex items-center justify-between flex-grow pl-12">
+                    <div class="flex items-center space-x-6">
+                        <a href="{% url 'get_shoes' %}" class="text-gray-200 hover:text-white transition">Shoes</a>
+                        <a href="#" class="text-gray-200 hover:text-white transition">Rackets</a>
+                        <a href="#" class="text-gray-200 hover:text-white transition">Sacos e Mochilas</a>
+                        <a href="#" class="text-gray-200 hover:text-white transition">Roupa</a>
+                        <a href="#" class="text-gray-200 hover:text-white transition">Acessórios</a>
+                    </div>
+                    {% if request.user.is_authenticated %}
+                        <a href="{% url 'logout_user' %}" class="text-gray-200 hover:text-white transition">Logout</a>
+                    {% else %}
+                          <a href="{% url 'login_user' %}" class="text-gray-200 hover:text-white transition">Login/Register</a>
+                    {% endif %}
+                </div>
+            </div>
+        </nav>
+
+        <!-- display image and description --->
+        <div class="bg-cover bg-no-repeat bg-center py-36" style="background-image: url({% static 'images/padel_background4.jpg' %});" >
+            <div class="container">
+                <h1 class="text-6xl text-white font-medium mb-2 capitalize">
+                    The best quality products for<br>a good padel experience
+                </h1>
+                <p class="text-2xl text-white capitalize">Many have tried, <br> few have succeeded</p>
+            </div>
+        </div>
+
+        <!-- featured products  --->
+        <div class="container py-16 border-b-4">
+            <h2 class="text-3xl fond-medium text-gray-600 uppercasde mb-10">Hot Products <i class="fas fa-fire pl-1"></i></h2>
+
+            <div class="grid grid-cols-5 gap-3">
+                {% for products in featured_products %}
+                <div class="relative round-sm overflow-hidden group">
+                    <img src="{% static 'images/default_image.png' %}" class="w-full hover:translate-y-0.5">
+                    <a href="{% url 'get_items_measures' products.id %}" class="flex items-center justify-center font-medium text-gray-600 text-xl pt-5 hover:text-primary">{{products.title}}</a>
+                    <h4 class="flex items-center justify-center font-medium text-gray-600 text-xl">{{products.get_average_rating}} <i class="fas fa-star"></i></h4>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <!-- shob by category  --->
+        <div class="container py-16">
+            <h2 class="text-3xl fond-medium text-gray-600 uppercasde mb-10">Shop by Category <i class="fas fa-list pl-1"></i></h2>
+
+            <div class="grid grid-cols-5 gap-3">
+                {% for category in categories %}
+                <div class="relative round-sm overflow-hidden group">
+                    <img src="{% static 'images/default_image.png' %}" class="w-full hover:translate-y-0.5">
+                    <a href="#" class="flex items-center justify-center font-medium text-gray-600 text-xl pt-5 hover:text-primary">{{ category.category}}</a>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <!-- footer -->
+        <footer class="bg-gray-300 pt-8 pb-12 border-gray-100">
+            <div class="container grid grid-cols-4">
+                <div class="col-span-1 space-y-8">
+                    <img src="{% static 'images/default_image.png' %}" class="w-10">
+                    <p class="flex space-x-6">Just enjoy the ride!</p>
+                </div>
+                <div class="col-span-1 space-y-8">
+                    <h3 class="text-sm font-semibold text-gray-600 uppercase tracking-wider">Our Social Media</h3>
+                    <div class="flex space-x-6 ">
+                        <a href="#" class="text-gray-600 hover:text-primary hover:translate-y-0.5">
+                            <i class="fab fa-facebook"></i>
+                        </a>
+                        <a href="#" class="text-gray-600 hover:text-primary hover:translate-y-0.5">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                        <a href="#" class="text-gray-600 hover:text-primary hover:translate-y-0.5">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                        <a href="#" class="text-gray-600 hover:text-primary hover:translate-y-0.5">
+                            <i class="fab fa-linkedin"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="col-span-1 space-y-6">
+                    <h3 class="text-sm font-semibold text-gray-600 uppercase tracking-wider">FAQ</h3>
+                    <div class="mt-4-space-y-4">
+                        <a href="#" class="text-gray-600 hover:text-primary hover:translate-y-0.5">
+                            <h4 class="capitalize">Tempo estimado de entrega</h4>
+                        </a>
+                        <a href="#" class="text-gray-600 hover:text-primary hover:translate-y-0.5">
+                            <h4 class="capitalize">Politica de Devoluções</h4>
+                        </a>
+                        <a href="#" class="text-gray-600 hover:text-primary hover:translate-y-0.5">
+                            <h4 class="capitalize">Validade dos cupões</h4>
+                        </a>
+                    </div>
+                </div>
+                <div class="col-span-1 space-y-6">
+                    <h3 class="text-sm font-semibold text-gray-600 uppercase tracking-wider">Sponsors</h3>
+                    <div class="mt-4-space-y-4">
+                        <a href="#" class="text-gray-600 hover:text-primary hover:translate-y-0.5">
+                            <h4 class="capitalize">Bullpadel</h4>
+                        </a>
+                        <a href="#" class="text-gray-600 hover:text-primary hover:translate-y-0.5">
+                            <h4 class="capitalize">Wilson</h4>
+                        </a>
+                        <a href="#" class="text-gray-600 hover:text-primary hover:translate-y-0.5">
+                            <h4 class="capitalize">Asics</h4>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </footer>
+
+	</body>
+
+</html>

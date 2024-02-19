@@ -58,7 +58,7 @@ ROOT_URLCONF = 'padelshop.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [(BASE_DIR / 'theme/templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -123,7 +123,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, '/static/')
 STATICFILES_DIRS = (
-    os.path.join(BASE_DIR, "padelshop/static"),
+    os.path.join(BASE_DIR, "theme/static"),
 )
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'padelshop/media')
