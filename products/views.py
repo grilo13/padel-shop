@@ -50,10 +50,10 @@ class GetItemsMeasures(APIView):
     permission_classes = (AllowAny,)
 
     def get(self, request, item_identifier):
-        items = ItemMeasures.objects.filter(item=item_identifier)
-        serializer = ItemMeasuresSerializer(items, many=True)
-
-        return Response(serializer.data, status=HTTP_200_OK)
+        item_measures = ItemMeasures.objects.filter(item=item_identifier)
+        featured_products = Item.objects.order_by('-date_added').filter(is_featured=True)
+        return render(request, 'item.html',
+                      context={'item_measures': item_measures, 'featured_products': featured_products})
 
 
 class Index(APIView):
